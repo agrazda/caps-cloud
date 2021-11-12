@@ -1,16 +1,22 @@
-"use strict";
-import{ createQueueComand } from "@aws-sdk/client-sqs"
-import {SQSClient} from "./lib/sqsClient.js"
+const { ReceiveMessageCommand } = require("@aws-sdk/client-sqs");
+const { sqsClient } = require("./libs/sqsClient.js");
 
-const AWS = require("aws-sdk");
-// configuire
-AWS.config.update({ region: "us-west-2" });
+const queueUrl = "package";
 
 const params = {
-    QueueName: "https://sqs.us-west-2.amazonaws.com/633598806335/package",
-    Attributes: { 
-        DelaySeconds: "5",
-        MessageRetentionPeriod: 
-    }
+  AttributeNames: ["SentTimestamp"],
+  MaxNumberOfMessages: 1,
+  MessageAttributeNames: ["All"],
+  QueueUrl: queueUrl,
+  WaitTimeSeconds: 10,
+};
 
-}
+const run = async () => {
+  try {
+    const data = await sqsClient.send(new ReceiveMessageCommand(params));
+    if (data.Messages) console.log(data); // For unit tests.
+  } catch (err) {
+    console.log("Receive Error", err);
+  }
+};
+run();

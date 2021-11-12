@@ -2,7 +2,8 @@
 
 ## UML  
 
-![UML](UML/Lab19.png)
+![UML](img/Lab19.png)
+![messages](img/Lab19message.png)
 
 ## Overview  
 -Using only AWS Services: SQS, SNS, Lambda, create a cloud version of the CAPS system  
